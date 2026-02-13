@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Para Thayna ❤️</title>
+
+<style>
+body{
+    margin:0;
+    font-family: Arial;
+    background: linear-gradient(135deg,#ff9a9e,#fad0c4);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    text-align:center;
+    overflow:hidden;
+}
+
+/* intro */
+#intro{
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:#000;
+    color:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:40px;
+    z-index:5;
+    animation:fadeIntro 3s forwards;
+}
+
+@keyframes fadeIntro{
+    0%{opacity:1;}
+    70%{opacity:1;}
+    100%{opacity:0; visibility:hidden;}
+}
+
+.card{
+    background:white;
+    padding:25px;
+    border-radius:20px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.3);
+    max-width:95%;
+    opacity:0;
+    animation:showCard 3s forwards;
+    animation-delay:2.5s;
+}
+
+@keyframes showCard{
+    to{opacity:1;}
+}
+
+button{
+    margin-top:20px;
+    padding:12px 25px;
+    border:none;
+    border-radius:10px;
+    background:#ff2e63;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+}
+
+img{
+    width:220px;
+    margin-top:20px;
+    border-radius:15px;
+    opacity:0;
+    transform:scale(0.8);
+    transition:0.6s;
+}
+
+.show{
+    opacity:1;
+    transform:scale(1);
+}
+
+.heart{
+    position:fixed;
+    color:#ff2e63;
+    font-size:20px;
+    animation:fall 2s linear forwards;
+}
+
+@keyframes fall{
+    to{
+        transform:translateY(100vh);
+        opacity:0;
+    }
+}
+
+#contador{
+    margin-top:15px;
+    font-weight:bold;
+    color:#ff2e63;
+}
+</style>
+</head>
+
+<body>
+
+<div id="intro">Para Thayna ❤️</div>
+
+<div class="card">
+    <h1>Thayna ❤️</h1>
+    <p>Desde 12/09/2025 às 23:40...</p>
+
+    <div id="contador"></div>
+
+    <button onclick="surpresa()" id="botao">Clique aqui meu amor</button>
+
+    <p id="msg"></p>
+    <img id="foto" src="foto.jpg">
+</div>
+
+<script>
+/* ===== CONTADOR ===== */
+const dataInicio = new Date("2025-09-12T23:40:00");
+
+function atualizarContador(){
+    const agora = new Date();
+    const diff = agora - dataInicio;
+
+    const dias = Math.floor(diff / (1000*60*60*24));
+    const horas = Math.floor((diff / (1000*60*60)) % 24);
+    const minutos = Math.floor((diff / (1000*60)) % 60);
+    const segundos = Math.floor((diff / 1000) % 60);
+
+    document.getElementById("contador").innerHTML =
+    dias + " dias, " +
+    horas + " horas, " +
+    minutos + " minutos e " +
+    segundos + " segundos fazendo minha vida mais feliz 💖";
+}
+
+setInterval(atualizarContador,1000);
+atualizarContador();
+
+/* ===== MUSIQUINHA CALMA ===== */
+var ativo=false;
+var audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+var ambienteInterval=null;
+
+function tocarAmbiente(){
+    const notas=[262,294,330,349,392,349,330,294];
+    let i=0;
+    ambienteInterval=setInterval(()=>{
+        const osc=audioCtx.createOscillator();
+        const gain=audioCtx.createGain();
+        osc.type="sine";
+        osc.frequency.value=notas[i];
+        gain.gain.setValueAtTime(0.05,audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001,audioCtx.currentTime+1.5);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime+1.5);
+        i++; if(i>=notas.length)i=0;
+    },1500);
+}
+
+function pararAmbiente(){
+    clearInterval(ambienteInterval);
+}
+
+/* ===== CORAÇÕES ===== */
+function coracoes(){
+    for(let i=0;i<200;i++){
+        var h=document.createElement("div");
+        h.className="heart";
+        h.innerHTML="❤";
+        h.style.left=Math.random()*100+"vw";
+        h.style.top=Math.random()*100+"vh";
+        h.style.fontSize=(Math.random()*25+15)+"px";
+        document.body.appendChild(h);
+        setTimeout(()=>h.remove(),2500);
+    }
+}
+
+function surpresa(){
+    var msg=document.getElementById("msg");
+    var foto=document.getElementById("foto");
+    var botao=document.getElementById("botao");
+
+    if(!ativo){
+        msg.innerHTML="Em todos os futuros possíveis… eu escolho você 💖";
+        foto.classList.add("show");
+        botao.innerHTML="Clique novamente ❤️";
+        coracoes();
+        tocarAmbiente();
+        ativo=true;
+    }else{
+        msg.innerHTML="";
+        foto.classList.remove("show");
+        botao.innerHTML="Clique aqui meu amor";
+        pararAmbiente();
+        ativo=false;
+    }
+}
+</script>
+
+</body>
+</html>
+
